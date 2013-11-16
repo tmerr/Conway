@@ -1,3 +1,5 @@
+"""Command line Conway's Game of Life."""
+
 # Rules:
 # 1. Live cell with less than two neighbors dies.
 # 2. Live cell with two or three neighbors lives on.
@@ -25,6 +27,7 @@ class Game(object):
         self.pos = lambda y, x: self.board[y][x]
 
     def update_one(self, y, x):
+        """Apply the rules to a single cell at y, x."""      
         numneighbors = 0
         for cury, curx in ((y+1, x), (y-1, x), (y, x-1), (y, x+1),
                         (y-1, x+1), (y+1, x-1), (y+1, x+1), (y-1, x-1)):
@@ -41,12 +44,14 @@ class Game(object):
                 self.tmpboard[y][x] = 1
 
     def update_all(self):
+        """Apply the rules to all cells."""
         for y in range(self.ysize):
             for x in range(self.xsize):
                 self.update_one(y, x)
         self.board = deepcopy(self.tmpboard)
 
     def draw(self):
+        """Draw a single frame."""
         dead = ' '
         alive = 'x'
         out = [] 
@@ -61,6 +66,7 @@ class Game(object):
         print('\n'.join(out))
 
     def run(self):
+        """Draw and update in an infinite loop."""
         while True:
             os.system('cls')
             self.draw()
