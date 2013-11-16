@@ -22,7 +22,7 @@ class Game(object):
         else:
             # randomly generate board
             self.board = [[binaryrandom(.15) for x in range(xsize)] for y in range(ysize)]
-        self.tmpboard = deepcopy(self.board)
+        self.nextboard = deepcopy(self.board)
         self.inbounds = lambda y, x: 0 <= y < ysize and 0 <= x < xsize
         self.pos = lambda y, x: self.board[y][x]
 
@@ -34,21 +34,19 @@ class Game(object):
             if self.inbounds(cury, curx) and self.pos(cury, curx) == 1:
                 numneighbors += 1
         
-        if self.board[y][x] == 1:
-            # rules 1, 2 and 3
-            if numneighbors < 2 or numneighbors > 3:
-                self.tmpboard[y][x] = 0
-        else:
-            # rule 4
-            if numneighbors == 3:
-                self.tmpboard[y][x] = 1
+        # rules 1, 2 and 3
+        if self.board[y][x] == 1 and numneighbors not in (2, 3):
+                self.nextboard[y][x] = 0
+        # rule 4
+        elif numneighbors == 3:
+                self.nextboard[y][x] = 1
 
     def update_all(self):
         """Apply the rules to all cells."""
         for y in range(self.ysize):
             for x in range(self.xsize):
                 self.update_one(y, x)
-        self.board = deepcopy(self.tmpboard)
+        self.board = deepcopy(self.nextboard)
 
     def draw(self):
         """Draw a single frame."""
