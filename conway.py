@@ -56,13 +56,7 @@ class Game(object):
         alive = 'x'
         out = [] 
         for y in self.board:
-            outln = []
-            for x in y:
-                if x == 0:
-                    outln.append(dead)
-                else:
-                    outln.append(alive)
-            out.append(''.join(outln))
+            out.append(''.join([alive*x or dead for x in y]))
         print('\n'.join(out))
 
     def run(self):
